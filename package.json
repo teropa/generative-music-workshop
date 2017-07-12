@@ -1,0 +1,13 @@
+{
+  "name": "generative-music-workshop",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "Tero Parviainen <tero@teropa.info>",
+  "license": "MIT",
+  "scripts": {
+    "start": "lite-server"
+  },
+  "devDependencies": {
+    "lite-server": "^2.3.0"
+  }
+}
