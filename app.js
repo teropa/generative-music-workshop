@@ -13,6 +13,29 @@ Tone.Buffer.on('load', () => {
     ['C3', 'D3', 'Eb3', 'F3', 'G3', 'A3', 'B3'],
     'alternateUp'
   );
+  const piano = new Piano.default().toMaster();
+  piano.load('node_modules/piano/Salamander/').then(() => {
+    MidiConvert.load('song.mid', function(midi) {
+      const track = midi.tracks[0];
+      const markovChain = {};
+      for (let i = 0; i < track.notes.length - 1; i++) {
+        const fromMidi = track.notes[i].midi;
+        const toMidi = track.notes[i + 1].midi;
+        if (!markovChain[fromMidi]) {
+          markovChain[fromMidi] = [];
+        }
+        markovChain[fromMidi].push(toMidi);
+      }
+
+      const chain = new Tone.CtrlMarkov(markovChain);
+      Tone.Transport.scheduleRepeat(time => {
+        const note = Tone.Frequency(chain.next()).toNote();
+        piano.keyDown(note, 0.8, time);
+        piano.keyUp(note, time + 0.5);
+      }, 1);
+      Tone.Transport.start();
+    });
+  });
 
   player.loop = true;
   player.loopStart = 1.5;
@@ -20,25 +43,4 @@ Tone.Buffer.on('load', () => {
   player.playbackRate = 0.1;
 
   //player.start();
-
-  MidiConvert.load('song.mid', function(midi) {
-    const track = midi.tracks[0];
-    const markovChain = {};
-    for (let i = 0; i < track.notes.length - 1; i++) {
-      const fromMidi = track.notes[i].midi;
-      const toMidi = track.notes[i + 1].midi;
-      if (!markovChain[fromMidi]) {
-        markovChain[fromMidi] = [];
-      }
-      markovChain[fromMidi].push(toMidi);
-    }
-
-    const chain = new Tone.CtrlMarkov(markovChain);
-    Tone.Transport.scheduleRepeat(time => {
-      synth.triggerAttackRelease(chain.next(), 0.5, time);
-    }, 1);
-    //Tone.Transport.start();
-
-    console.log(Piano);
-  });
 });
