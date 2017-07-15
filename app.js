@@ -1,46 +1,26 @@
 console.log('Hello Tone:', Tone.version);
 
-const buffer = new Tone.Buffer('sound.mp3');
+const piano = new Piano.default().toMaster();
+piano.load('node_modules/piano/Salamander/').then(() => {
+  piano.pedalDown();
+  const scale = ['C4', 'D4', 'E4', 'F4', 'G4', 'Ab4', 'B4'];
 
-Tone.Buffer.on('load', () => {
-  const pitchShift = new Tone.PitchShift(8).toMaster();
-  const player = new Tone.Player(buffer).connect(pitchShift);
-  const synth = new Tone.Synth({
-    oscillator: { type: 'fmsine' },
-    envelope: { attack: 0.2, decay: 1, release: 0.5 }
-  }).toMaster();
-  const pattern = new Tone.CtrlPattern(
-    ['C3', 'D3', 'Eb3', 'F3', 'G3', 'A3', 'B3'],
-    'alternateUp'
+  const ws = new WebSocket(
+    'ws://tweetsformusic.eu-west-1.elasticbeanstalk.com/'
   );
-  const piano = new Piano.default().toMaster();
-  piano.load('node_modules/piano/Salamander/').then(() => {
-    MidiConvert.load('song.mid', function(midi) {
-      const track = midi.tracks[0];
-      const markovChain = {};
-      for (let i = 0; i < track.notes.length - 1; i++) {
-        const fromMidi = track.notes[i].midi;
-        const toMidi = track.notes[i + 1].midi;
-        if (!markovChain[fromMidi]) {
-          markovChain[fromMidi] = [];
-        }
-        markovChain[fromMidi].push(toMidi);
-      }
-
-      const chain = new Tone.CtrlMarkov(markovChain);
-      Tone.Transport.scheduleRepeat(time => {
-        const note = Tone.Frequency(chain.next()).toNote();
-        piano.keyDown(note, 0.8, time);
-        piano.keyUp(note, time + 0.5);
-      }, 1);
-      Tone.Transport.start();
-    });
+  ws.addEventListener('open', () => {
+    console.log('opened');
   });
-
-  player.loop = true;
-  player.loopStart = 1.5;
-  player.loopEnd = buffer.duration - 1;
-  player.playbackRate = 0.1;
-
-  //player.start();
+  ws.addEventListener('message', event => {
+    const text = JSON.parse(event.data).text;
+    const jsIndex = text.toLowerCase().indexOf('javascript');
+    if (jsIndex >= 0) {
+      const normalizedIndex = jsIndex / 130;
+      const arrayIndex = Math.floor(normalizedIndex * scale.length);
+      const note = scale[arrayIndex];
+      piano.keyDown(note, 0.7, Tone.now());
+      piano.keyUp(note, Tone.now() + 2);
+      console.log(text);
+    }
+  });
 });
