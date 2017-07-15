@@ -1334,6 +1334,12 @@ performance-now@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
+piano@tambien/Piano:
+  version "1.0.0"
+  resolved "https://codeload.github.com/tambien/Piano/tar.gz/f2e66e9151a166bbbfe7add54d1ef143376f2611"
+  dependencies:
+    tone "^0.8.0"
+
 pify@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
@@ -1768,6 +1774,10 @@ tfunk@^3.0.1:
 to-array@0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/to-array/-/to-array-0.1.4.tgz#17e6c11f73dd4f3d74cda7a4ff3238e9ad9bf890"
+
+tone@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/tone/-/tone-0.8.0.tgz#15c3300383be662d223c2d6fede5f2b4464c0e1e"
 
 tough-cookie@~2.3.0:
   version "2.3.2"
