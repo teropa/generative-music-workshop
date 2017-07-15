@@ -6,7 +6,7 @@ Tone.Buffer.on('load', () => {
   const pitchShift = new Tone.PitchShift(8).toMaster();
   const player = new Tone.Player(buffer).connect(pitchShift);
   const synth = new Tone.Synth({
-    oscillator: { type: 'pwm' },
+    oscillator: { type: 'fmsine' },
     envelope: { attack: 0.2, decay: 1, release: 0.5 }
   }).toMaster();
   const pattern = new Tone.CtrlPattern(
@@ -20,10 +20,6 @@ Tone.Buffer.on('load', () => {
   player.playbackRate = 0.1;
 
   //player.start();
-  Tone.Transport.scheduleRepeat(time => {
-    synth.triggerAttackRelease(pattern.next(), 0.1, time);
-  }, 0.1);
-  //Tone.Transport.start();
 
   MidiConvert.load('song.mid', function(midi) {
     const track = midi.tracks[0];
@@ -36,5 +32,11 @@ Tone.Buffer.on('load', () => {
       }
       markovChain[fromMidi].push(toMidi);
     }
+
+    const chain = new Tone.CtrlMarkov(markovChain);
+    Tone.Transport.scheduleRepeat(time => {
+      synth.triggerAttackRelease(chain.next(), 0.5, time);
+    }, 1);
+    //Tone.Transport.start();
   });
 });
