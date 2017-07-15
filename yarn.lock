@@ -1340,6 +1340,12 @@ piano@tambien/Piano:
   dependencies:
     tone "^0.8.0"
 
+piano@teropa/Piano#tone10:
+  version "1.0.0"
+  resolved "https://codeload.github.com/teropa/Piano/tar.gz/6e160ab9e460ab3fee5bc22feb124fce454152c4"
+  dependencies:
+    tone "^0.10.0"
+
 pify@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
@@ -1774,6 +1780,10 @@ tfunk@^3.0.1:
 to-array@0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/to-array/-/to-array-0.1.4.tgz#17e6c11f73dd4f3d74cda7a4ff3238e9ad9bf890"
+
+tone@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/tone/-/tone-0.10.0.tgz#c8558a29459e2124222a27ebf17bbdbeeb36e7d6"
 
 tone@^0.8.0:
   version "0.8.0"

@@ -11,6 +11,6 @@
     "lite-server": "^2.3.0"
   },
   "dependencies": {
-    "piano": "tambien/Piano"
+    "piano": "teropa/Piano#tone10"
   }
 }

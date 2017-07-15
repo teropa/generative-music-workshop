@@ -38,5 +38,7 @@ Tone.Buffer.on('load', () => {
       synth.triggerAttackRelease(chain.next(), 0.5, time);
     }, 1);
     //Tone.Transport.start();
+
+    console.log(Piano);
   });
 });
