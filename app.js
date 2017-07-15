@@ -24,4 +24,17 @@ Tone.Buffer.on('load', () => {
     synth.triggerAttackRelease(pattern.next(), 0.1, time);
   }, 0.1);
   //Tone.Transport.start();
+
+  MidiConvert.load('song.mid', function(midi) {
+    const track = midi.tracks[0];
+    const markovChain = {};
+    for (let i = 0; i < track.notes.length - 1; i++) {
+      const fromMidi = track.notes[i].midi;
+      const toMidi = track.notes[i + 1].midi;
+      if (!markovChain[fromMidi]) {
+        markovChain[fromMidi] = [];
+      }
+      markovChain[fromMidi].push(toMidi);
+    }
+  });
 });
